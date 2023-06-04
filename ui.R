@@ -1,9 +1,6 @@
 
 # Header
-header <- dashboardHeader(title = span("Movie Analysis", style = 'font-family: "Montserrat";
-  font-style: bold;
-  font-weight: 550;
-  '))
+header <- dashboardHeader(title = "IMDb Movie Analysis")
 
 # Sidebar
 sidebar <- dashboardSidebar(
@@ -21,10 +18,13 @@ body <- dashboardBody(
   
   # using custom CSS 
   
-  tags$head(tags$style(HTML('* { 
-                            font-family: "Montserrat"; 
-                            }
-                            '))),
+  tags$head(tags$style(HTML('.main-header .logo {
+        font-family: "Montserrat";
+        font-weight: bold;
+        font-size: 18px;
+      }
+      
+      * { font-family: "Montserrat"; }'))),
   
   tabItems(
     
