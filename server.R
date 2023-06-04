@@ -26,7 +26,7 @@ shinyServer(function(input, output) {
       filter(year == input$year1) %>% 
       arrange(desc(score)) %>% 
       mutate(text = glue("Film: {names}
-                          IMDB Rating: {score}
+                          IMDB Rating: {score} / 100
                           Genre: {genre}
                           Original Language: {orig_lang}")) %>% 
       head(10)
@@ -81,7 +81,7 @@ shinyServer(function(input, output) {
         arrange(desc(revenue)) %>% 
         mutate(text = glue("Film: {names}
                           Year: {year}
-                          Revenue: {revenue}
+                          Revenue: $ {revenue}
                           Genre: {genre}
                           Original Language: {orig_lang}")) %>% 
         head(10)
@@ -100,7 +100,8 @@ shinyServer(function(input, output) {
         group_by(country) %>% 
         summarise(revenue = sum(revenue)) %>% 
         arrange(desc(revenue)) %>% 
-        mutate(text = glue("Revenue: {revenue}")) %>% 
+        mutate(text = glue("Country: {country}
+                           Revenue: $ {revenue}")) %>% 
         head(10)
       
       plot_revenue <- ggplot(revenue, 
@@ -117,7 +118,8 @@ shinyServer(function(input, output) {
         group_by(genre) %>% 
         summarise(revenue = sum(revenue)) %>% 
         arrange(desc(revenue)) %>% 
-        mutate(text = glue("Revenue: {revenue}")) %>% 
+        mutate(text = glue("Genre: {genre}
+                           Revenue: $ {revenue}")) %>% 
         head(10)
       
       plot_revenue <- ggplot(revenue, 
@@ -134,7 +136,8 @@ shinyServer(function(input, output) {
         group_by(orig_lang) %>% 
         summarise(revenue = sum(revenue)) %>% 
         arrange(desc(revenue)) %>% 
-        mutate(text = glue("Revenue: {revenue}")) %>% 
+        mutate(text = glue("Language: {orig_lang}
+                           Revenue: $ {revenue}")) %>% 
         head(10)
       
       plot_revenue <- ggplot(revenue, 
@@ -162,7 +165,7 @@ shinyServer(function(input, output) {
         arrange(desc(budget)) %>% 
         mutate(text = glue("Film: {names}
                           Year: {year}
-                          Budget: {budget}
+                          Budget: $ {budget}
                           Genre: {genre}
                           Original Language: {orig_lang}")) %>% 
         head(10)
@@ -181,7 +184,8 @@ shinyServer(function(input, output) {
         group_by(country) %>% 
         summarise(budget = sum(budget)) %>% 
         arrange(desc(budget)) %>% 
-        mutate(text = glue("Budget: {budget}")) %>% 
+        mutate(text = glue("Country: {country}
+                           Budget: $ {budget}")) %>% 
         head(10)
       
       plot_budget <- ggplot(budget, 
@@ -198,7 +202,8 @@ shinyServer(function(input, output) {
         group_by(genre) %>% 
         summarise(budget = sum(budget)) %>% 
         arrange(desc(budget)) %>% 
-        mutate(text = glue("Budget: {budget}")) %>% 
+        mutate(text = glue("Genre: {genre}
+                           Budget: $ {budget}")) %>% 
         head(10)
       
       plot_budget <- ggplot(budget, 
@@ -215,7 +220,8 @@ shinyServer(function(input, output) {
         group_by(orig_lang) %>% 
         summarise(budget = sum(budget)) %>% 
         arrange(desc(budget)) %>% 
-        mutate(text = glue("Budget: {budget}")) %>% 
+        mutate(text = glue("Language: {orig_lang}
+                           Budget: $ {budget}")) %>% 
         head(10)
       
       plot_budget <- ggplot(budget, 
@@ -248,9 +254,9 @@ shinyServer(function(input, output) {
                         aes_string(x = input$xlabel, y = input$ylabel)) +
         geom_point(alpha = 0.3, color = "#DA1212", aes(text = glue("Film: {names}
                                                      Year: {year}
-                                                     Budget: {Budget}
-                                                     Revenue: {Revenue}
-                                                     Rating: {Rating}
+                                                     Budget: $ {Budget}
+                                                     Revenue: $ {Revenue}
+                                                     Rating: {Rating} / 100
                                                      Genre: {genre}"))) +
         labs(x = input$xlabel, y = input$ylabel, 
              title = glue("Relationship between {input$xlabel} and {input$ylabel}")) +
