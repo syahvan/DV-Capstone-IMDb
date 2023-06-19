@@ -12,6 +12,7 @@ library(tidyverse)
 library(DT)
 library(readr)
 library(ggplot2)
+options(scipen = 9999)
 
 # Import Dataset
 movie <- read.csv("imdb.csv")
