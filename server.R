@@ -36,7 +36,7 @@ shinyServer(function(input, output) {
                                  text = text)) +
         geom_col(aes(fill = score)) +
         scale_y_discrete(labels = wrap_format(30)) + 
-        scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) +
+        scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, 10), labels = comma) +
         scale_fill_gradient(low = "#FA9884", high = "#DA1212") + 
         labs(x = "IMDB Rating (0-100)", y = NULL, 
              title = glue("Top 10 Most Rating Movie {input$year1}"),
@@ -81,7 +81,7 @@ shinyServer(function(input, output) {
         arrange(desc(revenue)) %>% 
         mutate(text = glue("Film: {names}
                           Year: {year}
-                          Revenue: $ {revenue}
+                          Revenue: $ {scales::comma(revenue)}
                           Genre: {genre}
                           Original Language: {orig_lang}")) %>% 
         head(10)
@@ -101,7 +101,7 @@ shinyServer(function(input, output) {
         summarise(revenue = sum(revenue)) %>% 
         arrange(desc(revenue)) %>% 
         mutate(text = glue("Country: {country}
-                           Revenue: $ {revenue}")) %>% 
+                           Revenue: $ {scales::comma(revenue)}")) %>% 
         head(10)
       
       plot_revenue <- ggplot(revenue, 
@@ -119,7 +119,7 @@ shinyServer(function(input, output) {
         summarise(revenue = sum(revenue)) %>% 
         arrange(desc(revenue)) %>% 
         mutate(text = glue("Genre: {genre}
-                           Revenue: $ {revenue}")) %>% 
+                           Revenue: $ {scales::comma(revenue)}")) %>% 
         head(10)
       
       plot_revenue <- ggplot(revenue, 
@@ -137,7 +137,7 @@ shinyServer(function(input, output) {
         summarise(revenue = sum(revenue)) %>% 
         arrange(desc(revenue)) %>% 
         mutate(text = glue("Language: {orig_lang}
-                           Revenue: $ {revenue}")) %>% 
+                           Revenue: $ {scales::comma(revenue)}")) %>% 
         head(10)
       
       plot_revenue <- ggplot(revenue, 
@@ -151,7 +151,8 @@ shinyServer(function(input, output) {
     
     plot_revenue <- plot_revenue +
       scale_y_discrete(labels = wrap_format(30)) +
-      scale_fill_gradient(low = "#FA9884", high = "#DA1212") +
+      scale_x_continuous(labels = comma) +
+      scale_fill_gradient(low = "#FA9884", high = "#DA1212", label = scales::comma) +
       my_theme
     
     ggplotly(plot_revenue, tooltip = "text")
@@ -165,7 +166,7 @@ shinyServer(function(input, output) {
         arrange(desc(budget)) %>% 
         mutate(text = glue("Film: {names}
                           Year: {year}
-                          Budget: $ {budget}
+                          Budget: $ {scales::comma(budget)}
                           Genre: {genre}
                           Original Language: {orig_lang}")) %>% 
         head(10)
@@ -185,7 +186,7 @@ shinyServer(function(input, output) {
         summarise(budget = sum(budget)) %>% 
         arrange(desc(budget)) %>% 
         mutate(text = glue("Country: {country}
-                           Budget: $ {budget}")) %>% 
+                           Budget: $ {scales::comma(budget)}")) %>% 
         head(10)
       
       plot_budget <- ggplot(budget, 
@@ -203,7 +204,7 @@ shinyServer(function(input, output) {
         summarise(budget = sum(budget)) %>% 
         arrange(desc(budget)) %>% 
         mutate(text = glue("Genre: {genre}
-                           Budget: $ {budget}")) %>% 
+                           Budget: $ {scales::comma(budget)}")) %>% 
         head(10)
       
       plot_budget <- ggplot(budget, 
@@ -221,7 +222,7 @@ shinyServer(function(input, output) {
         summarise(budget = sum(budget)) %>% 
         arrange(desc(budget)) %>% 
         mutate(text = glue("Language: {orig_lang}
-                           Budget: $ {budget}")) %>% 
+                           Budget: $ {scales::comma(budget)}")) %>% 
         head(10)
       
       plot_budget <- ggplot(budget, 
@@ -235,7 +236,8 @@ shinyServer(function(input, output) {
     
     plot_budget <- plot_budget +
       scale_y_discrete(labels = wrap_format(30)) +
-      scale_fill_gradient(low = "#FA9884", high = "#DA1212") +
+      scale_x_continuous(labels = comma) +
+      scale_fill_gradient(low = "#FA9884", high = "#DA1212", label = scales::comma) +
       my_theme
     
     ggplotly(plot_budget, tooltip = "text")
@@ -254,10 +256,12 @@ shinyServer(function(input, output) {
                         aes_string(x = input$xlabel, y = input$ylabel)) +
         geom_point(alpha = 0.3, color = "#DA1212", aes(text = glue("Film: {names}
                                                      Year: {year}
-                                                     Budget: $ {Budget}
-                                                     Revenue: $ {Revenue}
+                                                     Budget: $ {scales::comma(Budget)}
+                                                     Revenue: $ {scales::comma(Revenue)}
                                                      Rating: {Rating} / 100
                                                      Genre: {genre}"))) +
+        scale_x_continuous(labels = comma) +
+        scale_y_continuous(labels = comma) +
         labs(x = input$xlabel, y = input$ylabel, 
              title = glue("Relationship between {input$xlabel} and {input$ylabel}")) +
         my_theme
